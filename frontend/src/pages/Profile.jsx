@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import "../Styles/Profile.css";
 
 const Profile = () => {
   const [upcomingMeetups, setUpcomingMeetups] = useState([]);
@@ -6,7 +7,6 @@ const Profile = () => {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [overlayFeedback, setOverlayFeedback] = useState("");
 
-  // Function to fetch the user profile and retrieve the registered meetups
   const fetchUserProfile = async () => {
     try {
       const response = await fetch("http://localhost:3000/api/users/profile", {
@@ -26,7 +26,6 @@ const Profile = () => {
     }
   };
 
-  // Function to fetch details of the specific meetup
   const getMeetupDetails = async (eventId) => {
     try {
       const response = await fetch(
@@ -39,7 +38,7 @@ const Profile = () => {
       );
       if (response.ok) {
         const data = await response.json();
-        setSelectedEvent(data); // Store the selected meetup to display in the overlay
+        setSelectedEvent(data);
       } else {
         setOverlayFeedback("Error fetching event details.");
       }
@@ -48,7 +47,6 @@ const Profile = () => {
     }
   };
 
-  // Function to cancel meetup registration
   const unregisterFromMeetup = async (eventId) => {
     try {
       const response = await fetch(
@@ -62,8 +60,8 @@ const Profile = () => {
       );
       if (response.ok) {
         alert("Successfully unregistered from event.");
-        setSelectedEvent(null); // Close the overlay
-        fetchUserProfile(); // Update the list of registered meetups
+        setSelectedEvent(null);
+        fetchUserProfile();
       } else {
         const data = await response.json();
         alert(data.error || "Error unregistering from the event.");
@@ -73,99 +71,71 @@ const Profile = () => {
     }
   };
 
-  // Load the user profile when mounting the component
   useEffect(() => {
     fetchUserProfile();
   }, []);
 
   return (
-    <div style={{ padding: "2rem" }}>
-      <h2>Your Registered Events</h2>
+    <div className="profile-container">
+      <h2 className="profile-heading">Your Registered Events</h2>
 
-      {/* Error or success feedback */}
-      {overlayFeedback && <p>{overlayFeedback}</p>}
+      {overlayFeedback && <p className="feedback">{overlayFeedback}</p>}
 
-      {/* List of upcoming meetups */}
-      <h3>Upcoming Meetups:</h3>
-      <ul>
+      <h3 className="meetup-heading">Upcoming Meetups:</h3>
+      <ul className="meetup-list">
         {upcomingMeetups.map((event) => (
-          <li key={event.id} style={{ marginBottom: "1rem" }}>
+          <li key={event.id} className="meetup-item">
             <h3>{event.title}</h3>
-            <p>
-              Date: {new Date(event.date).toLocaleDateString()} at{" "}
-              {new Date(event.date).toLocaleTimeString([], {
-                hour: "2-digit",
-                minute: "2-digit",
-              })}
-            </p>
-            <button onClick={() => getMeetupDetails(event.id)}>Details</button>
+            <p>Date: {new Date(event.date).toLocaleDateString()}</p>
+            <button
+              onClick={() => getMeetupDetails(event.id)}
+              className="details-button"
+            >
+              Details
+            </button>
           </li>
         ))}
       </ul>
 
-      {/* List of past meetups */}
-      <h3>Past Meetups:</h3>
-      <ul>
+      <h3 className="meetup-heading">Past Meetups:</h3>
+      <ul className="meetup-list">
         {pastMeetups.map((event) => (
-          <li key={event.id} style={{ marginBottom: "1rem" }}>
+          <li key={event.id} className="meetup-item">
             <h3>{event.title}</h3>
-            <p>
-              Date: {new Date(event.date).toLocaleDateString()} at{" "}
-              {new Date(event.date).toLocaleTimeString([], {
-                hour: "2-digit",
-                minute: "2-digit",
-              })}
-            </p>
-            <button onClick={() => getMeetupDetails(event.id)}>Details</button>
+            <p>Date: {new Date(event.date).toLocaleDateString()}</p>
+            <button
+              onClick={() => getMeetupDetails(event.id)}
+              className="details-button"
+            >
+              Details
+            </button>
           </li>
         ))}
       </ul>
 
-      {/* Overlay for meetup details */}
       {selectedEvent && (
-        <div
-          style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <div
-            style={{
-              backgroundColor: "#fff",
-              padding: "2rem",
-              width: "90%",
-              maxWidth: "500px",
-              borderRadius: "8px",
-            }}
-          >
+        <div className="overlay">
+          <div className="overlay-content">
             <h2>{selectedEvent.title}</h2>
-            <p>
-              Date: {new Date(selectedEvent.date).toLocaleDateString()} at{" "}
-              {new Date(selectedEvent.date).toLocaleTimeString([], {
-                hour: "2-digit",
-                minute: "2-digit",
-              })}
-            </p>
+            <p>Date: {new Date(selectedEvent.date).toLocaleDateString()}</p>
             <p>Location: {selectedEvent.location}</p>
             <p>Description: {selectedEvent.description}</p>
             <p>Host: {selectedEvent.host}</p>
             <p>Capacity: {selectedEvent.capacity}</p>
             <p>Registered Users: {selectedEvent.registeredCount}</p>
 
-            {/* Error or success feedback in the overlay */}
-            {overlayFeedback && (
-              <p style={{ color: "red" }}>{overlayFeedback}</p>
-            )}
+            {overlayFeedback && <p className="feedback">{overlayFeedback}</p>}
 
-            <button onClick={() => setSelectedEvent(null)}>Return</button>
-            <button onClick={() => unregisterFromMeetup(selectedEvent._id)}>
+            <button
+              onClick={() => setSelectedEvent(null)}
+              className="close-button"
+            >
+              Return
+            </button>
+            <button
+              onClick={() => unregisterFromMeetup(selectedEvent._id)}
+              className="unregister-button"
+            >
               Unregister
             </button>
           </div>

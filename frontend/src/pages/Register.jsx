@@ -1,82 +1,92 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import "../Styles/Register.css";
 
 const Register = () => {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: ''
+    name: "",
+    email: "",
+    password: "",
   });
-  const [feedback, setFeedback] = useState('');
+  const [feedback, setFeedback] = useState("");
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     try {
-      const response = await fetch('http://localhost:3000/api/users/register', {
-        method: 'POST',
+      const response = await fetch("http://localhost:3000/api/users/register", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(formData),
       });
-  
+
       if (response.ok) {
-        setFeedback('Congratulations, your account has been successfully created!');
-        setFormData({ name: '', email: '', password: '' });
+        setFeedback(
+          "Congratulations, your account has been successfully created!"
+        );
+        setFormData({ name: "", email: "", password: "" });
       } else {
         const data = await response.json();
-        setFeedback(data.error || 'Registration failed.');
+        setFeedback(data.error || "Registration failed.");
       }
     } catch (error) {
-      setFeedback('Error connecting to server');
+      setFeedback("Error connecting to server");
     }
   };
 
   return (
-    <div style={{ padding: '2rem' }}>
-      <h2>New to Meetup? We'll help you get started.</h2>
-      <p>Create an account.</p>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>First and Last name: </label>
+    <div className="register-container">
+      <h2 className="register-heading">
+        New to Meetup? We'll help you get started.
+      </h2>
+      <p className="register-subheading">Create an account.</p>
+      <form className="register-form" onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label>First and Last name:</label>
           <input
             type="text"
             name="name"
             value={formData.name}
             onChange={handleChange}
             required
+            className="form-input"
           />
         </div>
-        <div>
-          <label>Email: </label>
+        <div className="form-group">
+          <label>Email:</label>
           <input
             type="email"
             name="email"
             value={formData.email}
             onChange={handleChange}
             required
+            className="form-input"
           />
         </div>
-        <div>
-          <label>Password: </label>
+        <div className="form-group">
+          <label>Password:</label>
           <input
             type="password"
             name="password"
             value={formData.password}
             onChange={handleChange}
             required
+            className="form-input"
           />
         </div>
-        <button type="submit">Join</button>
+        <button type="submit" className="submit-button">
+          Join
+        </button>
       </form>
-      {feedback && <p>{feedback}</p>}
+      {feedback && <p className="feedback">{feedback}</p>}
     </div>
   );
 };

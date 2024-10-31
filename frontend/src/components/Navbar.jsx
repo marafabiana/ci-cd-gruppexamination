@@ -1,33 +1,38 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
+import "../Styles/Navbar.css";
 
 const Navbar = () => {
-  const isLoggedIn = Boolean(localStorage.getItem('token')); // Check if the user is logged in
+  const isLoggedIn = Boolean(localStorage.getItem("token"));
 
   return (
-    <nav style={{ display: 'flex', justifyContent: 'space-between', padding: '1rem' }}>
-      {/* Redirect to the homepage */}
-      <Link to="/">
-        <h1>Meetup Logo</h1>
+    <nav className="navbar">
+      <Link to="/" className="navbar-logo">
+        <h1>Meetup</h1>
       </Link>
-      <div>
+      <div className="navbar-links">
         {isLoggedIn ? (
           <>
             <Link to="/profile">
-              <button>Profile</button>
+              <button className="navbar-button">Profile</button>
             </Link>
-            <button onClick={() => {
-              localStorage.removeItem('token'); // Logout
-              window.location.href = '/'; // Redirect to the homepage
-            }}>Logout</button>
+            <button
+              className="navbar-button"
+              onClick={() => {
+                localStorage.removeItem("token");
+                window.location.href = "/";
+              }}
+            >
+              Logout
+            </button>
           </>
         ) : (
           <>
             <Link to="/login">
-              <button>Log In</button>
+              <button className="navbar-button">Log In</button>
             </Link>
             <Link to="/register">
-              <button>Sign Up</button>
+              <button className="navbar-button navbar-signup">Sign Up</button>
             </Link>
           </>
         )}

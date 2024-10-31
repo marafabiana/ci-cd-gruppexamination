@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "../Styles/Login.css";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -42,32 +43,36 @@ const Login = () => {
   };
 
   return (
-    <div style={{ padding: "2rem" }}>
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Email: </label>
+    <div className="login-container">
+      <h2 className="login-heading">Login</h2>
+      <form className="login-form" onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label>Email:</label>
           <input
             type="email"
             name="email"
             value={formData.email}
             onChange={handleChange}
             required
+            className="form-input"
           />
         </div>
-        <div>
-          <label>Password: </label>
+        <div className="form-group">
+          <label>Password:</label>
           <input
             type="password"
             name="password"
             value={formData.password}
             onChange={handleChange}
             required
+            className="form-input"
           />
         </div>
-        <button type="submit">Log In</button>
+        <button type="submit" className="submit-button">
+          Log In
+        </button>
       </form>
-      {feedback && <p>{feedback}</p>}
+      {feedback && <p className="feedback">{feedback}</p>}
     </div>
   );
 };
