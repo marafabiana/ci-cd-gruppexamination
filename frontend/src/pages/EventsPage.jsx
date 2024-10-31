@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import "../Styles/EventsPage.css";
 
 const EventsPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -6,10 +7,8 @@ const EventsPage = () => {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [overlayFeedback, setOverlayFeedback] = useState("");
 
-  // Recupera o nome do usuário do localStorage
   const username = localStorage.getItem("username") || "User";
 
-  // Função para buscar eventos com base no termo de pesquisa
   const handleSearch = async () => {
     if (searchTerm.trim() === "") {
       setOverlayFeedback("Please enter a keyword to search.");
@@ -39,7 +38,6 @@ const EventsPage = () => {
     }
   };
 
-  // Função para carregar todos os próximos eventos
   const fetchAllEvents = async () => {
     try {
       const response = await fetch(
@@ -62,7 +60,6 @@ const EventsPage = () => {
     }
   };
 
-  // Função para buscar detalhes do evento específico
   const getMeetupDetails = async (eventId) => {
     try {
       const response = await fetch(
@@ -75,7 +72,7 @@ const EventsPage = () => {
       );
       if (response.ok) {
         const data = await response.json();
-        setSelectedEvent(data); // Armazena o evento selecionado para exibir no overlay
+        setSelectedEvent(data);
       } else {
         setOverlayFeedback("Error fetching event details.");
       }
@@ -84,7 +81,6 @@ const EventsPage = () => {
     }
   };
 
-  // Função para inscrever o usuário no evento e exibir a mensagem do backend
   const registerForMeetup = async (eventId) => {
     if (!eventId) {
       setOverlayFeedback("Event ID is missing. Please try again.");
@@ -109,7 +105,6 @@ const EventsPage = () => {
           data.message || "Registration completed successfully!"
         );
 
-        // Atualiza a contagem de inscritos no estado do evento selecionado
         setSelectedEvent((prevEvent) => ({
           ...prevEvent,
           registeredCount: prevEvent.registeredCount + 1,
@@ -125,38 +120,38 @@ const EventsPage = () => {
     }
   };
 
-  // Carrega todos os eventos futuros apenas se o campo de busca estiver vazio
   useEffect(() => {
     if (!searchTerm) {
       fetchAllEvents();
     }
   }, [searchTerm]);
 
-  // Função para fechar o overlay e limpar o feedback
   const closeOverlay = () => {
     setSelectedEvent(null);
-    setOverlayFeedback(""); // Limpa o feedback ao fechar o overlay
+    setOverlayFeedback("");
   };
 
   return (
-    <div style={{ padding: "2rem" }}>
-      <h2>Hello, {username}! Explore upcoming events:</h2>
+    <div className="events-page">
+      <h2 className="greeting">Hello, {username}! Explore upcoming events:</h2>
 
-      {/* Campo de pesquisa */}
-      <div style={{ marginBottom: "1rem" }}>
+      <div className="search-bar">
         <input
           type="text"
           placeholder="Search for events"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
+          className="search-input"
         />
-        <button onClick={handleSearch}>Search</button>
+        <button onClick={handleSearch} className="search-button">
+          Search
+        </button>
       </div>
 
-      <h2>Upcoming events</h2>
-      <ul>
+      <h2>Upcoming Events</h2>
+      <ul className="event-list">
         {events.map((event) => (
-          <li key={event._id} style={{ marginBottom: "1rem" }}>
+          <li key={event._id} className="event-item">
             <h3>{event.title}</h3>
             <p>
               Date: {new Date(event.date).toLocaleDateString()} at{" "}
@@ -167,35 +162,19 @@ const EventsPage = () => {
             </p>
             <p>Location: {event.location}</p>
             <p>Host: {event.host}</p>
-            <button onClick={() => getMeetupDetails(event._id)}>Details</button>
+            <button
+              onClick={() => getMeetupDetails(event._id)}
+              className="details-button"
+            >
+              Details
+            </button>
           </li>
         ))}
       </ul>
 
-      {/* Overlay para detalhes do evento */}
       {selectedEvent && (
-        <div
-          style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <div
-            style={{
-              backgroundColor: "#fff",
-              padding: "2rem",
-              width: "90%",
-              maxWidth: "500px",
-              borderRadius: "8px",
-            }}
-          >
+        <div className="overlay">
+          <div className="overlay-content">
             <h2>{selectedEvent.title}</h2>
             <p>
               Date: {new Date(selectedEvent.date).toLocaleDateString()} at{" "}
@@ -210,12 +189,15 @@ const EventsPage = () => {
             <p>Capacity: {selectedEvent.capacity}</p>
             <p>Registered Users: {selectedEvent.registeredCount}</p>
 
-            {overlayFeedback && (
-              <p>{overlayFeedback}</p>
-            )}
+            {overlayFeedback && <p className="feedback">{overlayFeedback}</p>}
 
-            <button onClick={closeOverlay}>Return</button>
-            <button onClick={() => registerForMeetup(selectedEvent?._id)}>
+            <button onClick={closeOverlay} className="close-button">
+              Return
+            </button>
+            <button
+              onClick={() => registerForMeetup(selectedEvent?._id)}
+              className="attend-button"
+            >
               Attend
             </button>
           </div>
