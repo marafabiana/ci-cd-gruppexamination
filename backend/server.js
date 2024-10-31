@@ -1,5 +1,3 @@
-// backend/server.js
-
 //❗️
 const cors = require("cors");
 
