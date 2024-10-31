@@ -1,0 +1,37 @@
+name: Deploy React app
+
+
+on:
+ push:
+   branches:
+     - development
+
+
+permissions:
+ contents: read
+ pages: write
+ id-token: write
+
+
+jobs:
+ build:
+   runs-on: ubuntu-latest
+
+
+   steps:
+     - uses: actions/checkout@v4
+     - name: Install modules
+       run: npm install
+     - name: Build dist
+       run: npm run build
+     - name: Setup pages
+       uses: actions/configure-pages@v3
+       with:
+         enablement: true
+     - name: Upload dist folder
+       uses: actions/upload-pages-artifact@v1
+       with:
+         path: './dist'
+     - name: Deploy to Github pages
+       id: deployment
+       uses: actions/deploy-pages@v1
