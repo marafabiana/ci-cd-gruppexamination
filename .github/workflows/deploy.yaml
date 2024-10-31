@@ -8,7 +8,7 @@ on:
 permissions:
   contents: read
   pages: write
-  id-token: write  
+  id-token: write
 
 jobs:
   build:
@@ -16,9 +16,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - name: Navigate to frontend
+        run: cd frontend  
       - name: Install modules
+        working-directory: ./frontend 
         run: npm install
       - name: Build dist
+        working-directory: ./frontend 
         run: npm run build
       - name: Setup pages
         uses: actions/configure-pages@v3
@@ -27,7 +31,7 @@ jobs:
       - name: Upload dist folder
         uses: actions/upload-pages-artifact@v1
         with:
-          path: './dist'
+          path: './frontend/dist'  
       - name: Deploy to Github pages
         id: deployment
         uses: actions/deploy-pages@v1
