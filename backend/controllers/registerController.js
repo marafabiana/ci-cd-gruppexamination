@@ -1,4 +1,4 @@
-const bcrypt = require('bcrypt');
+const bcryptjs = require('bcryptjs');
 const User = require('../models/User');
 
 const registerController = async (req, res) => {
@@ -14,7 +14,7 @@ const registerController = async (req, res) => {
       return res.status(400).json({ error: 'E-mail address already in use.' });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcryptjs.hash(password, 10);
 
     const user = new User({
       name,

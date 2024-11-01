@@ -20,7 +20,7 @@ const Register = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:3000/api/users/register", {
+      const response = await fetch("https://ci-cd-gruppexamination-1.onrender.com/api/users/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
