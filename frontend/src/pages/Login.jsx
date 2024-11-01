@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import "../Styles/Login.css";
 
 const Login = () => {
@@ -8,7 +7,6 @@ const Login = () => {
     password: "",
   });
   const [feedback, setFeedback] = useState("");
-  const navigate = useNavigate(); // Initialize useNavigate
 
   const handleChange = (e) => {
     setFormData({
@@ -37,7 +35,7 @@ const Login = () => {
         localStorage.setItem("token", data.token); // Save the token
         localStorage.setItem("username", data.name); // Save the username
 
-        navigate("/events"); // Use useNavigate to redirect
+        window.location.href = "/events"; // Redirect to the events page
       } else {
         const errorData = await response.json();
         setFeedback(errorData.error || "Login failed.");
