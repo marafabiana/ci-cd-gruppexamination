@@ -9,7 +9,7 @@ const Profile = () => {
 
   const fetchUserProfile = async () => {
     try {
-      const response = await fetch("http://localhost:3000/api/users/profile", {
+      const response = await fetch("https://ci-cd-gruppexamination-1.onrender.com/api/users/profile", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -29,7 +29,7 @@ const Profile = () => {
   const getMeetupDetails = async (eventId) => {
     try {
       const response = await fetch(
-        `http://localhost:3000/api/meetups/${eventId}`,
+        `https://ci-cd-gruppexamination-1.onrender.com/api/meetups/${eventId}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -50,7 +50,7 @@ const Profile = () => {
   const unregisterFromMeetup = async (eventId) => {
     try {
       const response = await fetch(
-        `http://localhost:3000/api/meetups/${eventId}/unregister`,
+        `https://ci-cd-gruppexamination-1.onrender.com/api/meetups/${eventId}/unregister`,
         {
           method: "DELETE",
           headers: {
