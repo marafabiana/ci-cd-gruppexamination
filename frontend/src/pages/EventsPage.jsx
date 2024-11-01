@@ -17,7 +17,7 @@ const EventsPage = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:3000/api/meetups/search?keyword=${searchTerm}`,
+        `https://ci-cd-gruppexamination-1.onrender.com/api/meetups/search?keyword=${searchTerm}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -41,7 +41,7 @@ const EventsPage = () => {
   const fetchAllEvents = async () => {
     try {
       const response = await fetch(
-        "http://localhost:3000/api/meetups/upcoming",
+        "https://ci-cd-gruppexamination-1.onrender.com/api/meetups/upcoming",
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -63,7 +63,7 @@ const EventsPage = () => {
   const getMeetupDetails = async (eventId) => {
     try {
       const response = await fetch(
-        `http://localhost:3000/api/meetups/${eventId}`,
+        `https://ci-cd-gruppexamination-1.onrender.com/api/meetups/${eventId}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -89,7 +89,7 @@ const EventsPage = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:3000/api/meetups/${eventId}/register`,
+        `https://ci-cd-gruppexamination-1.onrender.com/api/meetups/${eventId}/register`,
         {
           method: "POST",
           headers: {
