@@ -1,32 +1,57 @@
-name: Deploy 
+name: Deploy React App with Vite
 
 on:
   push:
     branches:
-      - development
       - main
+      - development
 
 jobs:
   build:
-    name: Build
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
 
     steps:
-      - name: Install modules
-        uses: actions/checkout@v4
-        run: npm ci
-      
-      - name: Build dist
-        run: npm run build
+      - name: Checkout repository
+        uses: actions/checkout@v4  
 
-      - name: Setup pages
-        uses: actions/configure-pages@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v2  
+        with:
+          node-version: '16'
+
+      - name: Install dependencies
+        run: |
+          cd frontend
+          npm install  # Somente `run` aqui
+
+      - name: Build project
+        run: |
+          cd frontend
+          npm run build  # Somente `run` aqui
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v3  
 
       - name: Upload dist folder
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-pages-artifact@v1  
         with:
-          path: "./frontend/dist"
-      
-      - name: Deploy to Github pages
-        id: deployment
-        uses: actions/deploy-pages@v1
+          path: './frontend/dist'
+
+      - name: Deploy to GitHub Pages
+        if: github.ref == 'refs/heads/main'
+        uses: actions/deploy-pages@v1  
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: './frontend/dist'
+
+      - name: Deploy to GitHub Pages (Test Environment)
+        if: github.ref == 'refs/heads/development'
+        uses: actions/deploy-pages@v1  
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: './frontend/dist'
+          destination_dir: 'test'
