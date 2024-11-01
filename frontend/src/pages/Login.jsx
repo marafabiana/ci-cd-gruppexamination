@@ -19,13 +19,16 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch("https://ci-cd-gruppexamination-1.onrender.com/api/users/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        "https://ci-cd-gruppexamination-1.onrender.com/api/users/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
 
       if (response.ok) {
         const data = await response.json();
@@ -68,7 +71,7 @@ const Login = () => {
             className="form-input"
           />
         </div>
-        <button type="submit" className="submit-button">
+        <button type="submit" className="submit-button" onClick={handleSubmit}>
           Log In
         </button>
       </form>
