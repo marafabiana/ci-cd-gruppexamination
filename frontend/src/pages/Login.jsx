@@ -71,7 +71,7 @@ const Login = () => {
             className="form-input"
           />
         </div>
-        <button type="submit" className="submit-button" onClick={handleSubmit}>
+        <button type="submit" className="submit-button">
           Log In
         </button>
       </form>
